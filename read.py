@@ -29,7 +29,6 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
             for uid in results:
-                print("row: ",uid[0])
                 if(uid[0].strip() == line.strip()):
                     valid = True
                     ser.write('Wow......'.encode())
