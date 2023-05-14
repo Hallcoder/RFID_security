@@ -11,8 +11,7 @@ cnx  =  mysql.connector.connect(
 cursor = cnx.cursor()
 cursor.execute("SELECT * FROM validUids")
 results = cursor.fetchall()
-for row in results:
-    print(row[0])
+
 ser = serial.Serial(
         port='COM4', #plz change this according to your port number
         baudrate=9600,
@@ -24,24 +23,21 @@ ser = serial.Serial(
 
 ser.flush()
 
-
 if __name__ == '__main__':
     valid = False
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
-            with open("uid.txt","r") as f:
-               for word in f:
-                  if(line.strip() == word.strip()):
-                     valid = True
-                     ser.write('Wow......'.encode())
+            for uid in results:
+                print("row: ",uid[0])
+                if(uid[0].strip() == line.strip()):
+                    valid = True
+                    ser.write('Wow......'.encode())
             if(valid):
                 print('UID is valid')
                 valid= False
             else:
                 ser.write('Not working....'.encode())
-                print("UID is invalid")
+                print("UID is invalid!")
         
-            #    f.close()
-            #    print(line)
 
